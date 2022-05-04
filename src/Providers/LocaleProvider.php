@@ -25,7 +25,16 @@ class LocaleProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
+            __DIR__."/../../config/field/factories.php", "field.factories",
+        );
+        $this->mergeConfigFrom(
+            __DIR__."/../../config/field/migrations.php", "field.migrations",
+        );
+        $this->mergeConfigFrom(
             __DIR__."/../../config/field/properties.php", "field.properties",
+        );
+        $this->mergeConfigFrom(
+            __DIR__."/../../config/field/validations.php", "field.validations",
         );
     }
 }
