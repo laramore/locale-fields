@@ -1,0 +1,58 @@
+{
+    "name": "laramore/locale-fields",
+    "description": "Add locale fields for Laramore",
+    "type": "library",
+    "license": "MIT",
+    "config": {
+        "platform": {
+            "php": "7.3"
+        }
+    },
+     "require": {
+         "php": "^7.3|^8.0",
+        "laramore/laramore": "^0.31.0"
+    },
+    "authors": [
+        {
+            "name": "NastuzziSamy",
+            "email": "samy@nastuzzi.fr"
+        }
+    ],
+    "require-dev": {
+        "phpmd/phpmd": ">=2.7",
+        "squizlabs/php_codesniffer": ">=3.5",
+        "phpstan/phpstan": ">=0.9.2",
+        "phpunit/phpunit": ">=6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laramore\\": "src/"
+        }
+    },
+    "suggest": {
+        "laramore/migrations": "Generate automatically all your migrations"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laramore\\Providers\\TextProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test:lint": [
+            "./vendor/bin/phpcs src",
+            "./vendor/bin/phpmd src text phpmd.xml"
+        ],
+        "fix:lint": [
+            "./vendor/bin/phpcbf src"
+        ],
+        "test:unit": [
+            "./vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
+        ],
+        "test": [
+            "@composer test:lint",
+            "@composer test:unit"
+        ]
+    }
+}
