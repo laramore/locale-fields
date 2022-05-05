@@ -17,6 +17,7 @@ use Laramore\Contracts\Field\Constraint\IndexableField;
 use Laramore\Contracts\Field\ExtraField;
 use Laramore\Contracts\Field\Field;
 use Laramore\Elements\OperatorElement;
+use Laramore\Facades\Option;
 use Laramore\Traits\Field\IndexableConstraints;
 
 class LocaleString extends BaseComposed implements ExtraField, IndexableField
@@ -37,7 +38,7 @@ class LocaleString extends BaseComposed implements ExtraField, IndexableField
      */
     protected function createField(string $name, $fieldData): Field
     {
-        return parent::createField($name, $fieldData)->hidden();
+        return parent::createField($name, $fieldData)->hidden()->nullable();
     }
 
     /**
@@ -211,5 +212,14 @@ class LocaleString extends BaseComposed implements ExtraField, IndexableField
             $this->getField('lastname')->where($subBuilder, $operator, $lastname, 'and');
             $this->getField('firstname')->where($subBuilder, $operator, $firstname, 'and');
         }, $boolean);
+    }
+
+    protected function lockFields()
+    {
+        if (! $this->hasOption(Option::nullable())) {
+            $this->getField(Lang::getFallback())->removeOption(Option::nullable());
+        }
+
+        parent::lockFields();
     }
 }
