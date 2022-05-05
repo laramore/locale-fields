@@ -2,6 +2,11 @@
 
 namespace Laramore\Fields;
 
+$localeTemplates = [];
+
+foreach (config('app.locales') as $locale) {
+    $localeTemplates[$locale] = '${name}_'.$locale;
+}
 
 return [
 
@@ -15,9 +20,7 @@ return [
     */
 
     LocaleString::class => [
-        'locales' => [
-            'en', 'fr',
-        ],
+        'templates' => $localeTemplates,
     ],
 
 ];

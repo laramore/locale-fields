@@ -13,13 +13,58 @@ namespace Laramore\Fields;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Laramore\Contracts\Eloquent\LaramoreBuilder;
+use Laramore\Contracts\Field\Constraint\IndexableField;
+use Laramore\Contracts\Field\ExtraField;
+use Laramore\Contracts\Field\Field;
 use Laramore\Elements\OperatorElement;
+use Laramore\Traits\Field\IndexableConstraints;
 
-class LocaleString extends BaseComposed
+class LocaleString extends BaseComposed implements ExtraField, IndexableField
 {
+    use IndexableConstraints;
+
     public static function of(string $class)
     {
         return parent::field([], array_fill_keys(config('app.locales'), $class));
+    }
+
+    /**
+     * Set the value for the field.
+     *
+     * @param  LaramoreModel|array|\Illuminate\Contracts\Support\\ArrayAccess $model
+     * @param  mixed                                                          $value
+     * @return mixed
+     */
+    public function set($model, $value)
+    {
+        return parent::set($model, $value) &&
+            $this->getOwner()->setFieldValue($this->getField(Lang::getLocale()), $model, $value);
+    }
+
+    /**
+     * Get the value for the field.
+     *
+     * @param  LaramoreModel|array|\Illuminate\Contracts\Support\\ArrayAccess $model
+     * @return mixed
+     */
+    public function resolve($model)
+    {
+        return $this->getOwner()->getFieldValue($this->getField(Lang::getLocale()), $model);
+    }
+
+    /**
+     * Return the set value for a specific field.
+     *
+     * @param Field                            $field
+     * @param LaramoreModel|array|\ArrayAccess $model
+     * @param mixed                            $value
+     * @return mixed
+     */
+    public function setFieldValue(Field $field, $model, $value)
+    {
+        parent::reset($model);
+
+        return parent::setFieldValue($field, $model, $value);
     }
 
     /**
