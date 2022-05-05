@@ -14,11 +14,4 @@ return [
     |
     */
 
-    LocaleString::class => [
-        'type' => 'char',
-        'property_keys' => [
-            'length', 'nullable', 'default',
-        ],
-    ],
-
 ];

@@ -29,6 +29,18 @@ class LocaleString extends BaseComposed implements ExtraField, IndexableField
     }
 
     /**
+     * Create a field.
+     *
+     * @param  string             $name
+     * @param  array|string|Field $fieldData
+     * @return Field
+     */
+    protected function createField(string $name, $fieldData): Field
+    {
+        return parent::createField($name, $fieldData)->hidden();
+    }
+
+    /**
      * Set the value for the field.
      *
      * @param  LaramoreModel|array|\Illuminate\Contracts\Support\\ArrayAccess $model
@@ -49,7 +61,11 @@ class LocaleString extends BaseComposed implements ExtraField, IndexableField
      */
     public function resolve($model)
     {
-        return $this->getOwner()->getFieldValue($this->getField(Lang::getLocale()), $model);
+        $field = $this->hasField(Lang::getLocale())
+            ? $this->getField(Lang::getLocale())
+            : $this->getField(Lang::getFallback());
+
+        return $this->getOwner()->getFieldValue($field, $model);
     }
 
     /**

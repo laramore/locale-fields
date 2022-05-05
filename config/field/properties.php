@@ -20,6 +20,9 @@ return [
     */
 
     LocaleString::class => [
+        'options' => [
+            'visible', 'fillable', 'required', 'append',
+        ],
         'templates' => $localeTemplates,
     ],
 
