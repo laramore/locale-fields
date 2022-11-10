@@ -10,7 +10,7 @@
     },
      "require": {
          "php": "^7.3|^8.0",
-        "laramore/laramore": "^0.31.0"
+        "laramore/laramore": ">=0.32"
     },
     "authors": [
         {
